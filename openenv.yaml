@@ -1,15 +1,49 @@
-name: SafeRouteEnv
-description: >
-  AI-Powered Safe Route Optimization for Women and Solo Travelers. 
-  Simulates a real-world environment where an AI agent selects the safest 
-  route between a source and destination using multiple safety factors.
+name: safe-route-env
+description: AI-powered safe route optimization environment for women and solo travelers
 type: openenv/environment
 version: "1.0"
 
-environment:
-  state_type: dictionary
-  action_type: discrete_string
-  reward_type: continuous
+entrypoint:
+  module: app
+  object: app
+
+api:
+  reset: /reset
+  step: /step
+  state: /state
+
+observation_space:
+  type: object
+  properties:
+    time_of_day:
+      type: string
+    routes:
+      type: array
+      items:
+        type: object
+        properties:
+          crime_rate:
+            type: number
+          lighting_level:
+            type: number
+          crowd_density:
+            type: number
+          distance:
+            type: number
+          dynamic_risk:
+            type: number
+
+action_space:
+  type: string
+  enum:
+    - route_1
+    - route_2
+    - route_3
+
+reward:
+  type: number
+  minimum: 0.0
+  maximum: 1.0
 
 tasks:
   - name: easy
